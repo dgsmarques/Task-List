@@ -1,7 +1,5 @@
 <?php
 
-	require_once ('autoload.php');
-
-	$task = new Task;
-
-	$task->removerTask($_GET['id']);		
+require_once ('autoload.php');
+$task = new Task;
+$task->removerTask($_GET['id']);		
