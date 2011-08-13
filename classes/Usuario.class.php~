@@ -1,0 +1,65 @@
+<?php
+
+class Usuario
+{
+	private $db;
+			
+	public function __construct()
+	{
+		$this->db = new Database;
+	}
+	
+	public function criarUsuario( $dados )
+	{
+		$dados['senha'] = md5($dados['senha'] );		
+		$this->db->inserir( 'usuarios', $dados );
+	}
+	
+	public function alterarUsuario( $dados, $id )
+	{
+		$this->db->alterar( 'usuarios', $dados, $id );	
+	}
+	
+	public function removerUsuario( $id )
+	{
+		$this->db->remover( 'usuarios',$id );
+	}
+	
+	public function listarUsuario( $colunas )
+	{	
+		$resultados = $this->db->listar( 'usuarios', $colunas );
+		return $resultados;
+	}
+	
+	public function verUsuario($colunas, $id)
+	{
+		$resultados = $this->db->listar( 'usuarios', $colunas, "id = $id" );
+		return $resultados;
+	}
+	
+	public function logarUsuario( $usuario, $senha )
+	{
+		$senha = md5($senha);	
+		
+		$resultado = $this->db->listar( 'usuarios', '*', "`usuario` = '$usuario' AND `senha` = '$senha'" );
+		
+		if ( $resultado ) {
+			$_SESSION['logado'] = true;
+			$_SESSION['uid'] = $resultado[0]['id'];
+			$_SESSION['usuario'] = $resultado[0]['usuario'];
+		}
+	}
+	
+	public function deslogarUsuario()
+	{
+		unset( $_SESSION );
+		session_destroy();
+	}	
+	
+	public function checarUsuario()
+	{		
+		if ( $_SESSION['logado'] == true ){
+			return true;
+		}	
+	}
+}

@@ -1,0 +1,11 @@
+<?php
+	
+	require_once ('autoload.php');
+
+	$task = new Task;
+	
+	print_r($_POST);
+	
+	if ($_POST) {		
+		$task->criarTask($_POST);		
+	}
